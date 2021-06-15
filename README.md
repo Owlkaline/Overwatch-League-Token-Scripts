@@ -10,11 +10,15 @@ A set of scripts that check if OWL or OW Contenders is live and automatically lo
 ## Automation with Linux
 ### Using Crontab
 1. Open crontab
-> crontab -e
+```
+crontab -e
+```
 2. Setup crontab similar to the following, which checks if ow channel is live every 30min and Upcoming streams evey 6hours.
->DISPLAY=:1
->*/30 * * * * /usr/bin/python ~/.owl/CheckChannelLive.py >> ~/.owl/ow_channel_live.log
->0 */6 * * * /usr/bin/python ~/.owl/CheckUpcomingStreams.py >> ~/.owl/ow_check_upcoming.log
+```
+DISPLAY=:1
+*/30 * * * * /usr/bin/python ~/.owl/CheckChannelLive.py >> ~/.owl/ow_channel_live.log'
+0 */6 * * * /usr/bin/python ~/.owl/CheckUpcomingStreams.py >> ~/.owl/ow_check_upcoming.log'
+```
 ## Automation with Windows
 
 
