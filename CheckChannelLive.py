@@ -33,10 +33,10 @@ for url in urls:
   waiting_for_stream = False;
   
   try:
-    rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
+    #rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
     stream_waiting = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[1]/div[1]/ytd-video-view-count-renderer/span[1]').text;
     
-    rewards_enabled = rewards.text == "REWARDS";
+    #rewards_enabled = rewards.text == "REWARDS";
     
     waiting_for_stream = 'waiting' in stream_waiting;
     
@@ -45,7 +45,7 @@ for url in urls:
 
   driver.quit();
 
-  if live and rewards_enabled and not waiting_for_stream:
+  if live and not waiting_for_stream: #and rewards_enabled and not waiting_for_stream:
     settings.log(url[0] + " is live!");
     if exists(settings.home_dir() + "/" + url_live):
       continue;
@@ -67,7 +67,7 @@ for url in urls:
         continue;
       settings.log("User accepted.");
     
-    if url_live == 'ContendersLive':
+    if url[0] == 'OWL':
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_owl.py");
     else:
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_contenders.py");

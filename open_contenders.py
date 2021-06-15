@@ -7,6 +7,8 @@ import pyautogui
 
 url = 'https://overwatchleague.com/en-us/contenders';
 
+video_location = [1709, 1036];
+
 settings = owl_settings.Settings();
 
 home = settings.home_dir();
@@ -21,5 +23,6 @@ settings.log("Opening Contenders.");
 webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(settings.firefox_location()))
 webbrowser.get('firefox').open_new(url)
 time.sleep(15);
-pyautogui.press('space');
+settings.click(video_location);
+#pyautogui.press('space');
 
