@@ -39,36 +39,40 @@ for url in urls:
   
   contenders_vid_started = False;
   
+  # Only valid if they are live, and then element will be "watching" instead of waiting when stream has started.
   try:
-    rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
     stream_waiting = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[1]/div[1]/ytd-video-view-count-renderer/span[1]').text;
-    rewards_enabled = rewards.text == "REWARDS";
-    
     waiting_for_stream = 'waiting' in stream_waiting;
-    
   except selenium.common.exceptions.NoSuchElementException:
     live = False;
   
-  if url[0] == "Contenders":
-    driver.get("https://overwatchleague.com/en-us/contenders");
-    time.sleep(20);
-    try:
-     contenders_rewards = driver.find_element_by_xpath("/html/body/div/div/div/div[4]/div[1]/div[3]/div/div/div/p").text;
-     print(contenders_rewards)
-     contenders_vid_started = "CONTENDERS VIEWERSHIP REWARDS" in contenders_rewards;
-    except:
-      contenders_vid_started = False;
-  
-  driver.quit();
-
   if live and not waiting_for_stream: #and rewards_enabled and not waiting_for_stream:
-    if url[0] == "Contenders" and not contenders_vid_started:
-      report_not_live(settings, url[0]);
-      continue;
+    print("something is live: " + url[0])
     
-    if url[0] == "OWL" and not rewards:
-      report_not_live(settings, url[0]);
-      continue;
+    if url[0] == "OWL":
+      try:
+        rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
+        rewards_enabled = rewards.text == "REWARDS";
+      except selenium.common.exceptions.NoSuchElementException:
+        rewards_enabled = False;
+      
+      if not rewards_enabled:
+        report_not_live(settings, url[0]);
+        continue;
+    
+    if url[0] == "Contenders":
+      driver.get("https://overwatchleague.com/en-us/contenders");
+      time.sleep(20);
+      
+      try:
+       contenders_rewards = driver.find_element_by_xpath("/html/body/div/div/div/div[4]/div[1]/div[3]/div/div/div/p").text;
+       contenders_vid_started = "CONTENDERS VIEWERSHIP REWARDS" in contenders_rewards;
+      except:
+        contenders_vid_started = False;
+      
+      if not contenders_vid_started:
+        report_not_live(settings, url[0]);
+        continue;
     
     settings.log(url[0] + " is live!");
     if exists(settings.home_dir() + "/" + url_live):
@@ -81,15 +85,18 @@ for url in urls:
       settings.log("Automatic mode is off, checking with user.");
       title = 'Gain Overwatch Tokens';
       text = 'Overwatch League is Live!';
+      
       if url_live == 'ContendersLive':
         title = 'Gain Contender skins';
         text = 'Overwatch Contenders is Live!';
       result = pyautogui.confirm(text=text, title=title, buttons=['Watch', 'Not now']);
-      print(result)
+      
       if result == 'Not now':
         settings.log("User declined.");
         continue;
       settings.log("User accepted.");
+    
+    driver.quit();
     
     if url[0] == 'OWL':
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_owl.py");
@@ -97,3 +104,4 @@ for url in urls:
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_contenders.py");
   else:
     report_not_live(settings, url[0]);
+    driver.quit();
