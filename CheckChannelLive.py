@@ -40,9 +40,9 @@ for url in urls:
   contenders_vid_started = False;
   
   try:
-    #rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
+    rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
     stream_waiting = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[1]/div[1]/ytd-video-view-count-renderer/span[1]').text;
-    #rewards_enabled = rewards.text == "REWARDS";
+    rewards_enabled = rewards.text == "REWARDS";
     
     waiting_for_stream = 'waiting' in stream_waiting;
     
@@ -63,6 +63,10 @@ for url in urls:
 
   if live and not waiting_for_stream: #and rewards_enabled and not waiting_for_stream:
     if url[0] == "Contenders" and not contenders_vid_started:
+      report_not_live(settings, url[0]);
+      continue;
+    
+    if url[0] == "OWL" and not rewards:
       report_not_live(settings, url[0]);
       continue;
     
