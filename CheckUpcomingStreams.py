@@ -19,9 +19,7 @@ schedules = [[]];
 
 i = 0;
 
-firefox_options = webdriver.FirefoxOptions()
-firefox_options.add_argument('--headless')
-driver = webdriver.Firefox(executable_path=settings.geckodriver_location(), service_log_path=os.path.devnull, options=firefox_options)
+driver = settings.new_browser_driver();
 
 for url in urls:
   driver.get(url[1])

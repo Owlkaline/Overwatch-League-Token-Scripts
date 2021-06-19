@@ -1,12 +1,10 @@
 #!/usr/bin/python3
 from OwlSettings import settings as owl_settings;
 
-import os;
 import time
 from os.path import exists
 
 import selenium
-from selenium import webdriver
 
 import pyautogui 
 import webbrowser
@@ -24,12 +22,12 @@ def report_not_live(settings, url):
 settings = owl_settings.Settings();
 
 settings.log("Checking if ow channels are live.");
+
+driver = settings.new_browser_driver()
+
 for url in urls:
   url_live = url[0] + 'Live';
   
-  firefox_options = webdriver.FirefoxOptions()
-  firefox_options.add_argument('--headless')
-  driver = webdriver.Firefox(executable_path=settings.geckodriver_location(), service_log_path=os.path.devnull, options=firefox_options)
   driver.get(url[1])
   time.sleep(20)
 
@@ -86,7 +84,7 @@ for url in urls:
       title = 'Gain Overwatch Tokens';
       text = 'Overwatch League is Live!';
       
-      if url_live == 'ContendersLive':
+      if url[0] == 'Contenders':
         title = 'Gain Contender skins';
         text = 'Overwatch Contenders is Live!';
       result = pyautogui.confirm(text=text, title=title, buttons=['Watch', 'Not now']);
@@ -96,7 +94,7 @@ for url in urls:
         continue;
       settings.log("User accepted.");
     
-    driver.quit();
+    #driver.quit();
     
     if url[0] == 'OWL':
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_owl.py");
@@ -104,4 +102,5 @@ for url in urls:
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_contenders.py");
   else:
     report_not_live(settings, url[0]);
-    driver.quit();
+  
+driver.quit();

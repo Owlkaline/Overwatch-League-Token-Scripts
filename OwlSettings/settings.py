@@ -2,10 +2,18 @@ import time
 import pyautogui
 from os.path import exists
 import platform
+from enum import Enum;
+import os;
+
+from selenium import webdriver
 
 from pathlib import Path
 
 settings_file = "/owl_settings.ini"
+
+class Browser(Enum):
+  Firefox = 0
+  Chrome = 1
 
 class Settings:
   def __init__(self):
@@ -19,9 +27,10 @@ class Settings:
     self.battlenet_username = '';
     self.battlenet_password = '';
     self.home = str(Path.home());
+    self.browser = Browser.Firefox;
     
     self.firefox = '/usr/bin/firefox'
-    self.geckodriver = '/usr/local/bin/geckodriver';
+    self.driver = '/usr/local/bin/geckodriver';
     
     if "Windows" in platform.system():
       self.firefox= "C:/Program Files/Mozilla Firefox/firefox.exe"
@@ -45,8 +54,8 @@ class Settings:
             self.screen_height = int(line.split('ScreenYResolution=')[1].split('\n')[0].split('\r')[0]);
           if "FirefoxLocation" in line:
             self.firefox = str(line.split("FirefoxLocation=")[1].split('\n')[0].split('\r')[0]);
-          if "GeckoDriverLocation" in line:
-            self.geckodriver = str(line.split("GeckoDriverLocation=")[1].split('\n')[0].split('\r')[0]);
+          if "DriverLocation" in line:
+            self.driver = str(line.split("DriverLocation=")[1].split('\n')[0].split('\r')[0]);
           if "GoogleUsername" in line:
             self.google_username = str(line.split("GoogleUsername=")[1].split('\n')[0].split('\r')[0]);
           if "GooglePassword" in line:
@@ -55,6 +64,9 @@ class Settings:
             self.battlenet_username = str(line.split("BattlenetUsername=")[1].split('\n')[0].split('\r')[0]);
           if "BattlenetPassword" in line:
             self.battlenet_password = str(line.split("BattlenetPassword=")[1].split('\n')[0].split('\r')[0]);
+          if "UseChromeInstead" in line:
+            if "True" in line.split('UseChromeInstead=')[1].split('\n')[0].split('\r')[0]:
+              self.browser = Browser.Chrome
     
     if self.google_username == '' or self.google_password == '':
       self.skip_google = True;
@@ -64,25 +76,19 @@ class Settings:
   def log(self, message):
     localtime = time.asctime(time.localtime(time.time()));
     print(localtime + ": " + message);
-
+  
   def resolution(self):
     return [self.screen_width, self.screen_height]
-
+  
   def should_skip_google(self):
     return self.skip_google;
-
+  
   def should_skip_battlenet(self):
     return self.skip_battlenet;
-
+  
   def should_open_automatically(self):
     return self.open_automatically;
-  
-  def firefox_location(self):
-    return self.firefox
-  
-  def geckodriver_location(self):
-    return self.geckodriver
-  
+
   def battlenet_info(self):
     return [self.battlenet_username, self.battlenet_password];
   
@@ -98,3 +104,14 @@ class Settings:
     pyautogui.moveTo(x, y, duration=0.1);
     time.sleep(0.1)
     pyautogui.click()
+  
+  def new_browser_driver(self):
+    options = None;
+    if self.browser == Browser.Firefox:
+      options = webdriver.FirefoxOptions()
+    if self.browser == Browser.Chrome:
+      options = webdriver.ChromeOptions()
+    
+    options.add_argument('--headless')
+    
+    return webdriver.Firefox(executable_path=self.driver, service_log_path=os.path.devnull, options=options)
