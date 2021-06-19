@@ -94,13 +94,12 @@ for url in urls:
         continue;
       settings.log("User accepted.");
     
-    #driver.quit();
-    
     if url[0] == 'OWL':
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_owl.py");
     else:
       runpy.run_path(path_name=settings.home_dir() + "/.owl/open_contenders.py");
   else:
     report_not_live(settings, url[0]);
-  
+
+driver.close();
 driver.quit();

@@ -79,7 +79,8 @@ for url in urls:
         schedules[i].append(date2);
   
   i += 1;
-  
+
+driver.close();
 driver.quit();
 
 i = 0;
