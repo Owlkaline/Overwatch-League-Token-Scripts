@@ -2,6 +2,7 @@
 from OwlSettings import settings as owl_settings;
 
 import time
+import os;
 from os.path import exists
 
 import selenium

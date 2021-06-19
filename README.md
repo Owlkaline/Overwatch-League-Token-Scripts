@@ -6,6 +6,7 @@ A set of scripts that check if OWL or OW Contenders is live and automatically lo
 3. Move the owl_settings.ini file to your home directory from the OwlSettings file.
 4. Customise the settings, see Configure Settings. (Highly Recommended)
 4. Setup CheckChannelLive.py to run every ~30min
+
 ## Configure Settings
 ## Automation with Linux
 ### Using Crontab
@@ -18,6 +19,10 @@ crontab -e
 DISPLAY=:1
 */30 * * * * /usr/bin/python ~/.owl/CheckChannelLive.py >> ~/.owl/ow_channel_live.log'
 0 */6 * * * /usr/bin/python ~/.owl/CheckUpcomingStreams.py >> ~/.owl/ow_check_upcoming.log'
+```
+## Installing Python dependacies
+```
+pip install pyautogui selenium
 ```
 ## Automation with Windows
 
