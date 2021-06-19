@@ -6,6 +6,7 @@ from enum import Enum;
 import os;
 
 from selenium import webdriver
+import webbrowser
 
 from pathlib import Path
 
@@ -107,7 +108,7 @@ class Settings:
   
   def open_system_browser(self, url):
     webbrowser.register('sys_browser', None, webbrowser.BackgroundBrowser(self.browser_location))
-    webbrowser.get('browser').open_new(url)
+    webbrowser.get('sys_browser').open_new(url)
   
   def new_browser_driver(self):
     options = webdriver.FirefoxOptions()
@@ -115,7 +116,7 @@ class Settings:
     if self.browser == Browser.Chrome:
       options = webdriver.ChromeOptions()
     
-    #options.add_argument('--headless')
+    options.add_argument('--headless')
     
     if self.browser == Browser.Chrome:
       return webdriver.Chrome(executable_path=self.driver, service_log_path=os.path.devnull, options=options)
