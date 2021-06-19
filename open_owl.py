@@ -13,8 +13,9 @@ if not settings.should_skip_google():
   runpy.run_path(path_name=settings.home_dir() + '/.owl/login_google.py');
 
 settings.log("Opening Owl.");
-webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(settings.firefox_location()))
-webbrowser.get('firefox').open_new(url)
+settings.open_system_browser(url);
+#webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(settings.firefox_location()))
+#webbrowser.get('firefox').open_new(url)
 time.sleep(15);
 pyautogui.press('space');
 

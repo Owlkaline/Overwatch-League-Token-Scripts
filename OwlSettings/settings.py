@@ -29,11 +29,11 @@ class Settings:
     self.home = str(Path.home());
     self.browser = Browser.Firefox;
     
-    self.firefox = '/usr/bin/firefox'
+    self.browser_location = '/usr/bin/firefox'
     self.driver = '/usr/local/bin/geckodriver';
     
     if "Windows" in platform.system():
-      self.firefox= "C:/Program Files/Mozilla Firefox/firefox.exe"
+      self.browser_location = "C:/Program Files/Mozilla Firefox/firefox.exe"
     
     if exists(self.home + settings_file):
       with open(self.home + settings_file, 'r') as o:
@@ -52,8 +52,8 @@ class Settings:
             self.screen_width = int(line.split('ScreenXResolution=')[1].split('\n')[0].split('\r')[0]);
           if "ScreenYResolution" in line:
             self.screen_height = int(line.split('ScreenYResolution=')[1].split('\n')[0].split('\r')[0]);
-          if "FirefoxLocation" in line:
-            self.firefox = str(line.split("FirefoxLocation=")[1].split('\n')[0].split('\r')[0]);
+          if "BrowserLocation" in line:
+            self.browser_location = str(line.split("BrowserLocation=")[1].split('\n')[0].split('\r')[0]);
           if "DriverLocation" in line:
             self.driver = str(line.split("DriverLocation=")[1].split('\n')[0].split('\r')[0]);
           if "GoogleUsername" in line:
@@ -105,13 +105,19 @@ class Settings:
     time.sleep(0.1)
     pyautogui.click()
   
+  def open_system_browser(self, url):
+    webbrowser.register('sys_browser', None, webbrowser.BackgroundBrowser(self.browser_location))
+    webbrowser.get('browser').open_new(url)
+  
   def new_browser_driver(self):
-    options = None;
-    if self.browser == Browser.Firefox:
-      options = webdriver.FirefoxOptions()
+    options = webdriver.FirefoxOptions()
+    
     if self.browser == Browser.Chrome:
       options = webdriver.ChromeOptions()
     
-    options.add_argument('--headless')
+    #options.add_argument('--headless')
     
-    return webdriver.Firefox(executable_path=self.driver, service_log_path=os.path.devnull, options=options)
+    if self.browser == Browser.Chrome:
+      return webdriver.Chrome(executable_path=self.driver, service_log_path=os.path.devnull, options=options)
+    else:
+      return webdriver.Firefox(executable_path=self.driver, service_log_path=os.path.devnull, options=options)
