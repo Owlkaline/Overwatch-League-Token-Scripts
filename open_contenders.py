@@ -20,8 +20,8 @@ if not settings.should_skip_battlenet():
   runpy.run_path(path_name=home + '/.owl/login_battlenet.py');
 
 settings.log("Opening Contenders.");
-webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(settings.firefox_location()))
-webbrowser.get('firefox').open_new(url)
+
+settings.open_system_browser(url);
 time.sleep(10);
 pyautogui.press('f11');
 time.sleep(5);

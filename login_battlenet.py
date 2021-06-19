@@ -24,8 +24,7 @@ password = info[1];
 settings.log("Logging into battle.net...");
 time.sleep(10)
 
-webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(settings.firefox_location()))
-webbrowser.get('firefox').open_new(url)
+settings.open_system_browser(url);
 
 time.sleep(5)
 pyautogui.press('f11');

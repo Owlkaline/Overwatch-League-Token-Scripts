@@ -14,8 +14,7 @@ if not settings.should_skip_google():
 
 settings.log("Opening Owl.");
 settings.open_system_browser(url);
-#webbrowser.register('firefox', None, webbrowser.BackgroundBrowser(settings.firefox_location()))
-#webbrowser.get('firefox').open_new(url)
+
 time.sleep(15);
 pyautogui.press('space');
 
