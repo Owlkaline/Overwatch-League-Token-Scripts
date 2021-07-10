@@ -14,9 +14,6 @@ password_box = [1228, 307];
 
 settings = owl_settings.Settings();
 
-if settings.should_skip_battlenet():
-  sys.exit();
-
 info = settings.battlenet_info();
 username = info[0];
 password = info[1];

@@ -13,9 +13,6 @@ username_box = [1353.0, 503.0]
 
 settings = owl_settings.Settings();
 
-if settings.should_skip_battlenet():
-  sys.exit();
-
 info = settings.google_info();
 username = info[0];
 password = info[1];
