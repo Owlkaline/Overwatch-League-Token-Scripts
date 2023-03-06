@@ -40,7 +40,7 @@ for url in urls:
   
   # Only valid if they are live, and then element will be "watching" instead of waiting when stream has started.
   try:
-    stream_waiting = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[1]/div[1]/ytd-video-view-count-renderer/span[1]').text;
+    stream_waiting = driver.find_element("xpath", '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[1]/div[1]/ytd-video-view-count-renderer/span[1]').text;
     waiting_for_stream = 'waiting' in stream_waiting;
   except selenium.common.exceptions.NoSuchElementException:
     live = False;
@@ -50,7 +50,7 @@ for url in urls:
     
     if url[0] == "OWL":
       try:
-        rewards = driver.find_element_by_xpath('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
+        rewards = driver.find_element("xpath", '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[2]/ytd-account-link-button-renderer/div/ytd-button-renderer/a');
         rewards_enabled = rewards.text == "REWARDS";
       except selenium.common.exceptions.NoSuchElementException:
         rewards_enabled = False;
@@ -64,7 +64,7 @@ for url in urls:
       time.sleep(20);
       
       try:
-       contenders_rewards = driver.find_element_by_xpath("/html/body/div/div/div/div[4]/div[1]/div[3]/div/div/div/p").text;
+       contenders_rewards = driver.find_element("xpath", "/html/body/div/div/div/div[4]/div[1]/div[3]/div/div/div/p").text;
        contenders_vid_started = "CONTENDERS VIEWERSHIP REWARDS" in contenders_rewards;
       except:
         contenders_vid_started = False;

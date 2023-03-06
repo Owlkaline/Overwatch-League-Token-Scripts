@@ -24,6 +24,11 @@ DISPLAY=:1
 ```
 pip install pyautogui selenium
 ```
+On Linux you will also have to install geckodriver, for your distro
+###Arch:
+```
+pacman -Sy geckodriver
+```
 ## Automation with Windows
-
-
+## Issues
+### selenium.common.exceptions.WebDriverException: Message: 'geckodriver' executable needs to be in PATH.

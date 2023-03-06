@@ -31,7 +31,8 @@ class Settings:
     self.browser = Browser.Firefox;
     
     self.browser_location = '/usr/bin/firefox'
-    self.driver = '/usr/local/bin/geckodriver';
+    #self.driver = '/usr/local/bin/geckodriver';
+    self.driver = '/usr/bin/geckodriver';
     
     if "Windows" in platform.system():
       self.browser_location = "C:/Program Files/Mozilla Firefox/firefox.exe"
